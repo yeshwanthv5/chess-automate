@@ -1,0 +1,5 @@
+*.pptx
+*.mov
+*.mp4
+.ipynb_checkpoints
+.DS_Store
