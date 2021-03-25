@@ -90,9 +90,34 @@ def place_king(mini_board):
     mini_board[8 + random.choice(empty_idxs)] = 'K'
     return True # For success
 
-def generate_placement(pawns = 6, knights = 0, bishops = 0, rooks = 0, queens = 0):
-    print(check_feasible_comb(pawns, knights, bishops, rooks, queens))
+def generate_placement(pawns, knights, bishops, rooks, queens):
+    # Simplifying assumption on order of piece placement: pawns -> knights -> bishops -> rooks -> queens
+    # To Do: Handle jumbled order 
     mini_board = ['-']*24
+    while(pawns):
+        if not place_pawn(mini_board):
+            print("Pawn not placed!")
+        pawns -= 1
+    while(knights):
+        if not place_knight(mini_board):
+            print("Knight not placed!")
+        knights -= 1
+    while(bishops):
+        if not place_bishop(mini_board):
+            print("Bishop not placed!")
+        bishops -= 1
+    while(rooks):
+        if not place_rook(mini_board):
+            print("Rook not placed!")
+        rooks -= 1
+    while(queens):
+        if not place_queen(mini_board):
+            print("Queen not placed!")
+        queens -= 1
+    if not place_king(mini_board):
+        print("No place for king!")
+
+    print_mini_board(mini_board)
 
 def unit_tests():
     # Valid combination
@@ -121,7 +146,10 @@ def unit_tests():
     place_king(mini_board)
     print_mini_board(mini_board)
 
-    generate_placement()
+    comb = random.choice(constants.COMBINATIONS)
+    print(comb)
+    print(check_feasible_comb(*comb))
 
+    generate_placement(*comb)
 
 unit_tests()
