@@ -6,6 +6,11 @@ def init_mini_board():
     mini_board = ['-']*24
     return mini_board
 
+def init_full_board():
+    # Generate an empty board
+    full_board = ['-']*64
+    return full_board
+
 def find_idxs(arr, value):
     # Find indexes of a particular value in the array
     # Can be used for finding postions of empty squares or maybe finding occurances of a piece
@@ -16,6 +21,11 @@ def print_mini_board(mini_board):
     print(mini_board[:8])
     print(mini_board[8:16])
     print(mini_board[16:])
+    print()
+
+def print_full_board(board):
+    for i in range(8):
+        print(board[i*8:i*8+8])
     print()
 
 def compute_total_points(pawns, knights, bishops, rooks, queens):
@@ -118,6 +128,34 @@ def generate_placement(pawns, knights, bishops, rooks, queens):
         print("No place for king!")
 
     print_mini_board(mini_board)
+    return mini_board
+
+def generate_fen(board):
+    fen = ""
+    for i in range(8):
+        n = 0
+        for j in range(i*8, i*8 + 8):
+            if board[j] == '-':
+                n += 1
+            else:
+                if n != 0:
+                    fen += str(n)
+                fen += board[j]
+                n = 0
+        if n != 0:
+            fen += str(n)
+        fen += '/' if fen.count('/') < 7 else ''
+    fen += ' w - - 0 1\n'
+    return fen
+
+def generate_board(white_mini_board, black_mini_board):
+    black_mini_board = [x.lower() for x in black_mini_board]
+    board = init_full_board()
+    for i in range(24):
+        board[i] = black_mini_board[24 - 1 - i]
+    for i in range(24):
+        board[5*8 + i] = white_mini_board[i]
+    return board
 
 def unit_tests():
     # Valid combination
@@ -126,7 +164,9 @@ def unit_tests():
     knights = 5
     bishops = 0
     rooks = 0
-    print(check_feasible_comb(pawns, knights, bishops, rooks, queens))
+    comb = [pawns, knights, bishops, rooks, queens]
+    print(comb)
+    print(check_feasible_comb(*comb))
 
     # Inalid combination
     pawns = 6
@@ -134,7 +174,9 @@ def unit_tests():
     knights = 6
     bishops = 0
     rooks = 0
-    print(check_feasible_comb(pawns, knights, bishops, rooks, queens))
+    comb = [pawns, knights, bishops, rooks, queens]
+    print(comb)
+    print(check_feasible_comb(*comb))
 
     mini_board = init_mini_board()
     print_mini_board(mini_board)
@@ -146,10 +188,21 @@ def unit_tests():
     place_king(mini_board)
     print_mini_board(mini_board)
 
+    print("White's placements")
     comb = random.choice(constants.COMBINATIONS)
     print(comb)
     print(check_feasible_comb(*comb))
+    white_mini_board = generate_placement(*comb)
 
-    generate_placement(*comb)
+    print("Black's placements")
+    comb = random.choice(constants.COMBINATIONS)
+    print(comb)
+    print(check_feasible_comb(*comb))
+    black_mini_board = generate_placement(*comb)
+
+    board = generate_board(white_mini_board, black_mini_board)
+    print_full_board(board)
+    fen = generate_fen(board)
+    print(fen)
 
 unit_tests()
