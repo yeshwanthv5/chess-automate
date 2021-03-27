@@ -103,6 +103,9 @@ def place_king(mini_board):
 def generate_placement(pawns, knights, bishops, rooks, queens):
     # Simplifying assumption on order of piece placement: pawns -> knights -> bishops -> rooks -> queens
     # To Do: Handle jumbled order 
+    # To Do: Implement turn based placement
+    # To Do: Implement turn based placement without deciding the combination beforehand
+    # To Do: Corner case where black has a check before the very first move
     mini_board = ['-']*24
     while(pawns):
         if not place_pawn(mini_board):
@@ -205,4 +208,4 @@ def unit_tests():
     fen = generate_fen(board)
     print(fen)
 
-unit_tests()
+# unit_tests()
