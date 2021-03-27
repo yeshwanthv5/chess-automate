@@ -130,7 +130,7 @@ def generate_placement(pawns, knights, bishops, rooks, queens):
     if not place_king(mini_board):
         print("No place for king!")
 
-    print_mini_board(mini_board)
+    # print_mini_board(mini_board)
     return mini_board
 
 def generate_fen(board):
