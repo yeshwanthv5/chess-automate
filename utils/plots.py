@@ -13,3 +13,5 @@ def simple_plot(y_data, x_data = None, y_label = "Y", x_label = "X", title = Non
     plt.ylabel(y_label)
     plt.title(title)
     plt.savefig(filename)
+
+    return filename
