@@ -1,3 +1,5 @@
+MAXMOVES = 200
+
 W_PAWN = 1
 W_KNIGHT = 3
 W_BISHOP = 3
