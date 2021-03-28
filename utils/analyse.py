@@ -4,7 +4,7 @@ import plots
 import copy
 
 def analyse_board(engine, board, time_limit = constants.PONDER_TIME):
-    ### Takes in chess.engine chess.Board object 
+    ### Takes in chess.engine and chess.Board objects and returns evaluation score (Centipawns) in white's pov
     limit = chess.engine.Limit(time=time_limit)
     info = engine.analyse(board, limit)
     score = 0
