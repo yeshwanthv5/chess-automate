@@ -4,15 +4,15 @@ import constants
 import placements
 import random
 
-def setup_random_game():
+def setup_random_game(white_preferred_combs = constants.COMBINATIONS, black_preferred_combs = constants.COMBINATIONS):
     # print("White's placements")
-    comb = random.choice(constants.COMBINATIONS)
+    comb = random.choice(white_preferred_combs)
     # print(comb)
     # print(placements.check_feasible_comb(*comb))
     white_mini_board = placements.generate_placement(*comb)
 
     # print("Black's placements")
-    comb = random.choice(constants.COMBINATIONS)
+    comb = random.choice(black_preferred_combs)
     # print(comb)
     # print(placements.check_feasible_comb(*comb))
     black_mini_board = placements.generate_placement(*comb)
