@@ -4,3 +4,10 @@
 .ipynb_checkpoints
 .DS_Store
 *.png
+Stockfish/
+stockfish*
+*.pyc
+temp*
+rog*
+*dataset*log
+*dataset*json

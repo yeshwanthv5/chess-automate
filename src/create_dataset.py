@@ -7,6 +7,7 @@ import automate
 import analyse
 import random
 import json
+import time
 
 def create_dataset(filename, white_range = (0, 1), black_range = (0, 1), reps = 1):
     engine = chess.engine.SimpleEngine.popen_uci(constants.SF_PATH)
@@ -31,7 +32,7 @@ def create_dataset(filename, white_range = (0, 1), black_range = (0, 1), reps = 
                 row["init_score"] = score_list[0]
                 row["result"] = result
                 dataset.append(row)
-                print(row)
+                # print(row)
 
     with open(filename, 'w') as fout:
         json.dump(dataset, fout)
@@ -41,7 +42,9 @@ def main():
     white_range = (int(sys.argv[1]), int(sys.argv[2]))
     black_range = (int(sys.argv[3]), int(sys.argv[4]))
     reps = int(sys.argv[5])
-    filename = "dataset_" + str(white_range[0]) + "_" + str(white_range[1]) + "_" + str(black_range[0]) + "_" + str(black_range[1]) + "_" + str(reps) + ".json"
+    if len(sys.argv) == 7:
+        constants.SF_PATH = sys.argv[6]
+    filename = "dataset_" + str(white_range[0]) + "_" + str(white_range[1]) + "_" + str(black_range[0]) + "_" + str(black_range[1]) + "_" + str(reps) + "_" + str(time.time()) + ".json"
     create_dataset(filename, white_range=white_range, black_range=black_range, reps = reps)
 
 if __name__ == "__main__":
