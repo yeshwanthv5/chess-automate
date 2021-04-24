@@ -15,7 +15,10 @@ def analyse_board(engine, board, time_limit = constants.PONDER_TIME):
         else:
             score = -1*constants.MATE_VALUE
     else:
-        score = int(score_str)
+        if score_str[0] == '+':
+            score = min(int(score_str), constants.MATE_VALUE)
+        else:
+            score = max(int(score_str), -1*constants.MATE_VALUE)
     return score
 
 def find_next_move(engine, board, time_limit = constants.PONDER_TIME):
