@@ -5,23 +5,27 @@ import placements
 import random
 
 def setup_random_game(white_preferred_combs = constants.COMBINATIONS, black_preferred_combs = constants.COMBINATIONS):
-    # print("White's placements")
-    comb = random.choice(white_preferred_combs)
-    # print(comb)
-    # print(placements.check_feasible_comb(*comb))
-    white_mini_board = placements.generate_placement(*comb)
+    # Setup a random initial game given the preferred combinations
+    while True:
+        # print("White's placements")
+        comb = random.choice(white_preferred_combs)
+        # print(comb)
+        # print(placements.check_feasible_comb(*comb))
+        white_mini_board = placements.generate_placement(*comb)
 
-    # print("Black's placements")
-    comb = random.choice(black_preferred_combs)
-    # print(comb)
-    # print(placements.check_feasible_comb(*comb))
-    black_mini_board = placements.generate_placement(*comb)
+        # print("Black's placements")
+        comb = random.choice(black_preferred_combs)
+        # print(comb)
+        # print(placements.check_feasible_comb(*comb))
+        black_mini_board = placements.generate_placement(*comb)
 
-    board = placements.generate_board(white_mini_board, black_mini_board)
-    # placements.print_full_board(board)
-    fen = placements.generate_fen(board)
-    # print(fen)
-    board = chess.Board(fen)
+        board = placements.generate_board(white_mini_board, black_mini_board)
+        # placements.print_full_board(board)
+        fen = placements.generate_fen(board)
+        # print(fen)
+        board = chess.Board(fen)
+        if board.is_valid():
+            break
     return board
 
 def main():
