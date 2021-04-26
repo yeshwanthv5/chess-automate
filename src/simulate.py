@@ -9,7 +9,8 @@ import analyse
 
 def main():
     engine = chess.engine.SimpleEngine.popen_uci(constants.SF_PATH)
-    board = automate.setup_random_game()
+    game = automate.AutomateGame()
+    board = game.setup_random_game()
     analyse.simulate_analyse_and_plot_game(engine, board)
     engine.quit()
 
