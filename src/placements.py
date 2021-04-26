@@ -41,11 +41,6 @@ def check_feasible_comb(pawns, knights, bishops, rooks, queens):
         return False
     return True
 
-def isempty(board, pos):
-    if board[pos] == "-":
-        return True
-    return False
-
 def square_to_index(sq):
     col = ord(sq[0]) - ord('a')
     row = 8 - int(sq[1])
@@ -58,6 +53,15 @@ def index_to_square(idx):
     col = chr(ord('a') + col)
     sq = str(col) + str(row)
     return sq
+
+def isempty(board, idx):
+    if board[idx] == "-":
+        return True
+    return False
+
+def isempty_square(board, square):
+    idx = square_to_index(square)
+    return isempty(board, idx)
 
 def place_fboard_piece(board, piece, sq):
     # Place given piece on full board at a given position
@@ -94,6 +98,13 @@ def place_piece(board, piece, square):
                 return False
 
     return place_fboard_piece(board, piece, square)
+
+def count_pieces(board, piece):
+    count = 0
+    for p in board:
+        if p == piece:
+            count += 1
+    return count
 
 def place_mboard_rand_pawn(mini_board):
     # A pawn can be placed in the first two rows
