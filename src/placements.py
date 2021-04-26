@@ -41,7 +41,61 @@ def check_feasible_comb(pawns, knights, bishops, rooks, queens):
         return False
     return True
 
-def place_pawn(mini_board):
+def isempty(board, pos):
+    if board[pos] == "-":
+        return True
+    return False
+
+def square_to_index(sq):
+    col = ord(sq[0]) - ord('a')
+    row = 8 - int(sq[1])
+    return row*8 + col
+
+def index_to_square(idx):
+    row = idx//8
+    row = 8 - row
+    col = idx%8
+    col = chr(ord('a') + col)
+    sq = str(col) + str(row)
+    return sq
+
+def place_fboard_piece(board, piece, sq):
+    # Place given piece on full board at a given position
+    idx = square_to_index(sq)
+    if not isempty(board, idx):
+        print("Square already occupied.")
+        return False
+    
+    board[idx] = piece
+    return True
+
+def place_piece(board, piece, square):
+    # Make a move in automate variant
+    # Here the move means a player placing his/her piece in one of the feasible squares
+    # Piece is case sensitve
+    rank = int(square[1])
+    if piece.isupper(): # White
+        if piece == "P": # Pawn
+            if not (rank == 2 or rank == 3):
+                print("White pawns can only be placed in 2nd and 3rd ranks")
+                return False
+        else: # Other pieces
+            if not (rank == 1 or rank == 2):
+                print("White pieces can only be placed in 1st and 2nd ranks")
+                return False
+    else: # Black
+        if piece == "p": # Pawn
+            if not (rank == 6 or rank == 7):
+                print("Black pawns can only be placed in 6th and 7th ranks")
+                return False
+        else: # Other pieces
+            if not (rank == 7 or rank == 8):
+                print("Black pieces can only be placed in 7th and 8th ranks")
+                return False
+
+    return place_fboard_piece(board, piece, square)
+
+def place_mboard_rand_pawn(mini_board):
     # A pawn can be placed in the first two rows
     empty_idxs = find_idxs(mini_board[:16], '-')
     if len(empty_idxs) == 0:
@@ -51,7 +105,7 @@ def place_pawn(mini_board):
     mini_board[random.choice(empty_idxs)] = 'P'
     return True # For success
 
-def place_knight(mini_board):
+def place_mboard_rand_knight(mini_board):
     # A Knight can be placed in the last two rows
     empty_idxs = find_idxs(mini_board[8:], '-')
     if len(empty_idxs) == 0:
@@ -60,7 +114,7 @@ def place_knight(mini_board):
     mini_board[8 + random.choice(empty_idxs)] = 'N'
     return True # For success
 
-def place_bishop(mini_board):
+def place_mboard_rand_bishop(mini_board):
     # A Bishop can be placed in the last two rows
     empty_idxs = find_idxs(mini_board[8:], '-')
     if len(empty_idxs) == 0:
@@ -69,7 +123,7 @@ def place_bishop(mini_board):
     mini_board[8 + random.choice(empty_idxs)] = 'B'
     return True # For success
 
-def place_rook(mini_board):
+def place_mboard_rand_rook(mini_board):
     # A Rook can be placed in the last two rows
     empty_idxs = find_idxs(mini_board[8:], '-')
     if len(empty_idxs) == 0:
@@ -78,7 +132,7 @@ def place_rook(mini_board):
     mini_board[8 + random.choice(empty_idxs)] = 'R'
     return True # For success
 
-def place_queen(mini_board):
+def place_mboard_rand_queen(mini_board):
     # A Queen can be placed in the last two rows
     empty_idxs = find_idxs(mini_board[8:], '-')
     if len(empty_idxs) == 0:
@@ -87,7 +141,7 @@ def place_queen(mini_board):
     mini_board[8 + random.choice(empty_idxs)] = 'Q'
     return True # For success
 
-def place_king(mini_board):
+def place_mboard_rand_king(mini_board):
     king_idxs = find_idxs(mini_board[8:], 'K')
     if len(king_idxs) != 0:
         # There is already a king on the board. Placing another is illegal
@@ -105,29 +159,29 @@ def generate_placement(pawns, knights, bishops, rooks, queens):
     # To Do: Handle jumbled order 
     # To Do: Implement turn based placement
     # To Do: Implement turn based placement without deciding the combination beforehand
-    # To Do: Corner case where black has a check before the very first move
+    # To Do: Corner case where black has a check before the very first move - check for validity after the board is generated. handled in consumer (automate.py)
     mini_board = ['-']*24
     while(pawns):
-        if not place_pawn(mini_board):
+        if not place_mboard_rand_pawn(mini_board):
             print("Pawn not placed!")
         pawns -= 1
     while(knights):
-        if not place_knight(mini_board):
+        if not place_mboard_rand_knight(mini_board):
             print("Knight not placed!")
         knights -= 1
     while(bishops):
-        if not place_bishop(mini_board):
+        if not place_mboard_rand_bishop(mini_board):
             print("Bishop not placed!")
         bishops -= 1
     while(rooks):
-        if not place_rook(mini_board):
+        if not place_mboard_rand_rook(mini_board):
             print("Rook not placed!")
         rooks -= 1
     while(queens):
-        if not place_queen(mini_board):
+        if not place_mboard_rand_queen(mini_board):
             print("Queen not placed!")
         queens -= 1
-    if not place_king(mini_board):
+    if not place_mboard_rand_king(mini_board):
         print("No place for king!")
 
     # print_mini_board(mini_board)
@@ -183,12 +237,12 @@ def unit_tests():
 
     mini_board = init_mini_board()
     print_mini_board(mini_board)
-    place_pawn(mini_board)
-    place_knight(mini_board)
-    place_bishop(mini_board)
-    place_rook(mini_board)
-    place_queen(mini_board)
-    place_king(mini_board)
+    place_mboard_rand_pawn(mini_board)
+    place_mboard_rand_knight(mini_board)
+    place_mboard_rand_bishop(mini_board)
+    place_mboard_rand_rook(mini_board)
+    place_mboard_rand_queen(mini_board)
+    place_mboard_rand_king(mini_board)
     print_mini_board(mini_board)
 
     print("White's placements")
@@ -207,5 +261,24 @@ def unit_tests():
     print_full_board(board)
     fen = generate_fen(board)
     print(fen)
+    print(square_to_index("h1"))
+    print(place_fboard_piece(board, 'n', 'a4'))
+    print_full_board(board)
+    print(index_to_square(9))
+
+    board = init_full_board()
+    print_full_board(board)
+    success = place_piece(board, 'P', 'a2')
+    print(success)
+    print_full_board(board)
+    success = place_piece(board, 'P', 'a4')
+    print(success)
+    print_full_board(board)
+    success = place_piece(board, 'p', 'a2')
+    print(success)
+    print_full_board(board)
+    success = place_piece(board, 'K', 'a2')
+    print(success)
+    print_full_board(board)
 
 # unit_tests()
