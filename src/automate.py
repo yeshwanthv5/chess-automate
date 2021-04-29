@@ -3,6 +3,7 @@ import chess.engine
 import constants
 import placements
 import random
+import analyse
 
 class AutomateGame():
     def __init__(self):
@@ -13,6 +14,7 @@ class AutomateGame():
         self.white_king = False # Is white king already placed
         self.black_king = False # Is black king already placed
         self.move_count = 0 # Keep track of number of moves played
+        self.move_history = []
 
     def legal_moves(self):
         move_list = []
@@ -149,11 +151,15 @@ class AutomateGame():
                     else:
                         self.turn = not self.turn # Switch the turn to other player
             
-            
             self.move_count += 0.5 # Increment the move count
+            self.move_history.append((piece, square))
             return True
         print("Illegal Move")
         return False
+
+    def undo_move(self):
+        piece, square = self.move_history[-1]
+        return placements.remove_piece(self.board, square)
 
     def print_board(self):
         placements.print_full_board(self.board)
@@ -217,7 +223,7 @@ def random_game():
     engine.quit()
 
 def main():
-    # random_game()
+    # Tests
     game = AutomateGame()
     print(game.legal_moves())
     success = game.move('P', 'a2')
@@ -231,7 +237,11 @@ def main():
     success = game.move('P', 'c3')
     success = game.move('p', 'd7')
     success = game.move('P', 'h3')
+    game.print_game()
     success = game.move('p', 'e6')
+    game.print_game()
+    success = game.undo_move()
+    game.print_game()
     success = game.move('N', 'a1')
     success = game.move('n', 'a8')
     success = game.move('B', 'h1')
@@ -239,6 +249,7 @@ def main():
     print(game.legal_moves())
     success = game.move('Q', 'g2')
     print(game.legal_moves())
+    # random_game()
     game = AutomateGame()
     while True:
         move_list = game.legal_moves()
@@ -248,6 +259,9 @@ def main():
         game.move(m[0], m[1])
     game.print_game()
 
+    engine = chess.engine.SimpleEngine.popen_uci(constants.SF_PATH)
+    analyse.simulate_analyse_and_plot_game(engine, game.get_chess_board())
+    engine.quit()
 
 if __name__ == "__main__":
     main()

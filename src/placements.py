@@ -73,6 +73,16 @@ def place_fboard_piece(board, piece, sq):
     board[idx] = piece
     return True
 
+def remove_piece(board, square):
+    # Remove the piece from the given square
+    idx = square_to_index(square)
+    if isempty(board, idx):
+        print("No piece in the square.")
+        return False
+    
+    board[idx] = '-'
+    return True
+
 def place_piece(board, piece, square):
     # Make a move in automate variant
     # Here the move means a player placing his/her piece in one of the feasible squares
