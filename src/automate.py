@@ -16,6 +16,9 @@ class AutomateGame():
         self.move_count = 0 # Keep track of number of moves played
         self.move_history = []
 
+    def is_initial(self):
+        return self.move_count == 0
+
     def legal_moves(self):
         move_list = []
         if self.turn:
@@ -172,11 +175,12 @@ class AutomateGame():
         print("Black's available points: ", self.black_pts)
 
     def get_chess_board(self):
-         # placements.print_full_board(board)
-        fen = placements.generate_fen(self.board)
-        # print(fen)
-        chess_board = chess.Board(fen)
-        return chess_board
+        return placements.get_chess_board(self.board)
+
+    def game_over(self):
+        if len(self.legal_moves()) == 0:
+            return True
+        return False
 
     def setup_random_game(self, white_preferred_combs = constants.COMBINATIONS, black_preferred_combs = constants.COMBINATIONS):
         # Setup a random initial game given the preferred combinations
@@ -260,7 +264,22 @@ def main():
     game.print_game()
 
     engine = chess.engine.SimpleEngine.popen_uci(constants.SF_PATH)
-    analyse.simulate_analyse_and_plot_game(engine, game.get_chess_board())
+    # analyse.simulate_analyse_and_plot_game(engine, game.get_chess_board())
+    score_list = analyse.simulate_and_analyse_game(engine, game.get_chess_board())
+    print(score_list)
+
+    game = AutomateGame()
+    while True:
+        move_list = game.legal_moves()
+        if len(move_list) == 0:
+            break
+        m = random.choice(move_list)
+        game.move(m[0], m[1])
+    game.print_game()
+
+    engine = chess.engine.SimpleEngine.popen_uci(constants.SF_PATH)
+    winner = analyse.simulate_and_report_result(engine, game.get_chess_board())
+    print(winner)
     engine.quit()
 
 if __name__ == "__main__":

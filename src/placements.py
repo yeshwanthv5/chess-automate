@@ -1,5 +1,6 @@
 import random
 import constants
+import chess
 
 def init_mini_board():
     # Generate an empty board of 3 ranks
@@ -27,6 +28,11 @@ def print_full_board(board):
     for i in range(8):
         print(board[i*8:i*8+8])
     print()
+
+def get_chess_board(board):
+    fen = generate_fen(board)
+    chess_board = chess.Board(fen)
+    return chess_board
 
 def compute_total_points(pawns, knights, bishops, rooks, queens):
     return constants.W_PAWN*pawns + constants.W_KNIGHT*knights + constants.W_BISHOP*bishops + constants.W_ROOK*rooks + constants.W_QUEEN*queens
@@ -62,6 +68,11 @@ def isempty(board, idx):
 def isempty_square(board, square):
     idx = square_to_index(square)
     return isempty(board, idx)
+
+def isterminal(board):
+    if 'k' in board and 'K' in board:
+        return True
+    return False
 
 def place_fboard_piece(board, piece, sq):
     # Place given piece on full board at a given position

@@ -50,6 +50,15 @@ def simulate_and_analyse_game(engine, init_board, time_limit = constants.PONDER_
     score_list = analyse_game(engine, move_history, time_limit=time_limit)
     return score_list
 
+def simulate_and_report_result(engine, init_board, time_limit = constants.PONDER_TIME):
+    limit = chess.engine.Limit(time=time_limit)
+    score_list = simulate_and_analyse_game(engine, init_board, time_limit = time_limit)
+    if score_list[-1] > 0:
+        return +1
+    elif score_list[-1] < 0:
+        return -1
+    return 0
+
 def simulate_analyse_and_plot_game(engine, init_board, time_limit = constants.PONDER_TIME):
     limit = chess.engine.Limit(time=time_limit)
     score_list = simulate_and_analyse_game(engine, init_board, time_limit = time_limit)
