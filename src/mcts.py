@@ -93,7 +93,7 @@ def mcts_strategy(num_iters, engine):
     return fxn
 
 def main():
-    n = 2
+    n = 50
     num_games = 5
     p1_wins = 0
     p2_wins = 0

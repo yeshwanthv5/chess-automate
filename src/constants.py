@@ -23,5 +23,7 @@ COMBINATIONS = [[6, 0, 0, 2, 3], [6, 0, 1, 3, 2], [6, 0, 2, 4, 1], [6, 0, 3, 5, 
 MATE_VALUE = 2000 # A high number specifying the score for checkmate
 
 SF_PATH = "/home/yv35/scratch60/chess-automate/stockfish_13_linux_x64/stockfish_13_linux_x64"
-
+# SF_PATH = "/home/yv35/scratch60/chess-automate/lc0-training-client-linux"
+# SF_PATH = "/home/yv35/scratch60/chess-automate/ALChess_184_x64"
+# SF_PATH = "/home/yv35/scratch60/chess-automate/Strelka_2.0B_x64"
 # SF_PATH = "/Users/yesh/Documents/S2021/CPSC 674/Stockfish/src/stockfish"
