@@ -11,3 +11,9 @@ temp*
 rog*
 *dataset*log
 *dataset*json
+*dataset/
+*.rar
+*.zip
+engines/
+*.tsv
+*.log
