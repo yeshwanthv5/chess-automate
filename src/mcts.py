@@ -93,10 +93,11 @@ def mcts_strategy(num_iters, engine):
     return fxn
 
 def main():
-    n = 50
-    num_games = 5
+    n = 20
+    num_games = 10
     p1_wins = 0
     p2_wins = 0
+    draws = 0
     engine = chess.engine.SimpleEngine.popen_uci(constants.SF_PATH)
     mcts_player = lambda: mcts_strategy(n, engine)
     for i in range(num_games):
@@ -107,21 +108,26 @@ def main():
             move_list = pos.legal_moves()
             if len(move_list) == 0:
                 break
-            if game.turn:
+            if pos.turn:
                 m = mcts_strat(pos)
+                print("White:", m)
             else:
                 m = random.choice(move_list)
+                print("Black:", m)
             pos = pos.result(*m)
         # game.print_game()
-        if pos.get_winner(engine) == 0:
-            p1_wins += 0.5
-            p2_wins += 0.5
-        elif pos.get_winner(engine) > 0:
+        winner = pos.get_winner(engine)
+        print("Winner:", winner)
+        if winner == 0:
+            # p1_wins += 0.5
+            # p2_wins += 0.5
+            draws += 1
+        elif winner > 0:
             p1_wins += 1
         else:
             p2_wins += 1
     engine.quit()
-    print("Wins/Games: {}/{}".format(p1_wins, num_games))
+    print("P1/P2/Draw/Games: {}/{}/{}/{}".format(p1_wins, p2_wins, draws, num_games))
 
 if __name__ == '__main__':
     main()

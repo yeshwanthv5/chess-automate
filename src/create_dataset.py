@@ -69,7 +69,7 @@ def main_():
     reps = int(sys.argv[5])
     if len(sys.argv) == 7:
         constants.SF_PATH = sys.argv[6]
-    filename = "dataset_" + str(white_range[0]) + "_" + str(white_range[1]) + "_" + str(black_range[0]) + "_" + str(black_range[1]) + "_" + str(reps) + "_" + str(time.time()) + ".json"
+    filename = "../struct_dataset/dataset_" + str(white_range[0]) + "_" + str(white_range[1]) + "_" + str(black_range[0]) + "_" + str(black_range[1]) + "_" + str(reps) + "_" + str(time.time()) + ".json"
     create_dataset_old(filename, white_range=white_range, black_range=black_range, reps = reps)
 
 def main():

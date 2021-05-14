@@ -1,5 +1,5 @@
 MAXMOVES = 200
-PONDER_TIME = 0.005
+PONDER_TIME = 0.001
 
 W_PAWN = 1
 W_KNIGHT = 3
@@ -8,7 +8,7 @@ W_ROOK = 4
 W_QUEEN = 7
 W_KING = 0 # Not ideal but okay
 W_TOTAL = 35
-MAX_PAWNS = 10
+MAX_PAWNS = 8
 MIN_PAWNS = 6
 
 PIECE_VALUES = {'p': W_PAWN, 'P': W_PAWN,
