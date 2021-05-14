@@ -392,6 +392,9 @@ class AutomateGame:
 
         def __hash__(self):
             return self.hash
+        
+        def get_chess_board(self):
+            return placements.get_chess_board(self.board)
 
 def random_game():
     pondertime = 1.0

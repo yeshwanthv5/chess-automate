@@ -47,7 +47,7 @@ def traverse_tree(node, lookup_table, engine):
             node.unexpanded_moves.pop(choice)
             score = default_policy(node_to_expand, engine)
         else: # If all the nodes are expanded choose the child based on UCT policy
-            if node.pos.next_player() == 0:
+            if node.pos.next_player() == True:
                 choices = {move:(child.wins/child.visits + math.sqrt(0.5*math.log(node.visits)/child.visits)) for move, child in node.expanded_children.items()}
             else:
                 choices = {move:(1-1*child.wins/child.visits + math.sqrt(0.5*math.log(node.visits)/child.visits)) for move, child in node.expanded_children.items()}
@@ -74,7 +74,7 @@ def mcts(pos, num_iters, lookup_table, engine):
 
     choices = {move: (child.wins/child.visits) for move, child in root.expanded_children.items()} # Exploration term is omitted from this
 
-    if root.pos.next_player() == 0:
+    if root.pos.next_player() == True:
         ans = max(choices.items(), key=operator.itemgetter(1))[0] # Pick max node for player 0
     else:
         ans = min(choices.items(), key=operator.itemgetter(1))[0] # Pick min node for player 1
@@ -93,8 +93,8 @@ def mcts_strategy(num_iters, engine):
     return fxn
 
 def main():
-    n = 20
-    num_games = 10
+    n = 50
+    num_games = 20
     p1_wins = 0
     p2_wins = 0
     draws = 0
