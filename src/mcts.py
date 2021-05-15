@@ -4,6 +4,7 @@ import math
 import operator
 import chess
 import constants
+import time
 
 class TreeNode:
     # Tree Node: keeps track of node stats visits and wins, stores list of unexpanded moves and keeps pointers to expanded children nodes
@@ -100,6 +101,8 @@ def main():
     draws = 0
     engine = chess.engine.SimpleEngine.popen_uci(constants.SF_PATH)
     mcts_player = lambda: mcts_strategy(n, engine)
+    total_moves = 0
+    total_time = 0
     for i in range(num_games):
         mcts_strat = mcts_player()
         game = automate.AutomateGame()
@@ -109,8 +112,13 @@ def main():
             if len(move_list) == 0:
                 break
             if pos.turn:
+                start_t = time.time()
                 m = mcts_strat(pos)
+                end_t = time.time()
+                total_time += (end_t - start_t)
+                total_moves += 1
                 print("White:", m)
+                print("Time:", end_t-start_t)
             else:
                 m = random.choice(move_list)
                 print("Black:", m)
@@ -128,6 +136,7 @@ def main():
             p2_wins += 1
     engine.quit()
     print("P1/P2/Draw/Games: {}/{}/{}/{}".format(p1_wins, p2_wins, draws, num_games))
+    print("Avg time per move:", total_time/total_moves)
 
 if __name__ == '__main__':
     main()
