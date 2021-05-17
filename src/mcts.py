@@ -94,7 +94,7 @@ def mcts_strategy(num_iters, engine):
     return fxn
 
 def main():
-    n = 50
+    n = 100
     num_games = 20
     p1_wins = 0
     p2_wins = 0
@@ -122,9 +122,52 @@ def main():
             else:
                 m = random.choice(move_list)
                 print("Black:", m)
-            pos = pos.result(*m)
+            try:
+                pos = pos.result(*m)
+            except:
+                break
         # game.print_game()
-        winner = pos.get_winner(engine)
+        try:
+            winner = pos.get_winner(engine)
+        except:
+            winner = 0
+        print("Winner:", winner)
+        if winner == 0:
+            # p1_wins += 0.5
+            # p2_wins += 0.5
+            draws += 1
+        elif winner > 0:
+            p1_wins += 1
+        else:
+            p2_wins += 1
+    for i in range(num_games):
+        mcts_strat = mcts_player()
+        game = automate.AutomateGame()
+        pos = game.initial_position()
+        while not pos.game_over():
+            move_list = pos.legal_moves()
+            if len(move_list) == 0:
+                break
+            if not pos.turn:
+                start_t = time.time()
+                m = mcts_strat(pos)
+                end_t = time.time()
+                total_time += (end_t - start_t)
+                total_moves += 1
+                print("White:", m)
+                print("Time:", end_t-start_t)
+            else:
+                m = random.choice(move_list)
+                print("Black:", m)
+            try:
+                pos = pos.result(*m)
+            except:
+                break
+        # game.print_game()
+        try:
+            winner = pos.get_winner(engine)
+        except:
+            winner = 0
         print("Winner:", winner)
         if winner == 0:
             # p1_wins += 0.5
@@ -135,7 +178,7 @@ def main():
         else:
             p2_wins += 1
     engine.quit()
-    print("P1/P2/Draw/Games: {}/{}/{}/{}".format(p1_wins, p2_wins, draws, num_games))
+    print("P1/P2/Draw/Games: {}/{}/{}/{}".format(p1_wins, p2_wins, draws, 2*num_games))
     print("Avg time per move:", total_time/total_moves)
 
 if __name__ == '__main__':
